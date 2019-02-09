@@ -1,6 +1,6 @@
 const fs = require('fs');
 const ts = require('typescript');
-import * as path from 'path';
+const path = require('path');
 
 interface Step {
     funcName: string; 
@@ -15,6 +15,9 @@ export class StepDefinitionParser {
         }
     }
     public cucumberStepKeywords: string[] = ['Given', 'When', 'Then', 'And', 'But'];
+    public setFilePath(newPath: string): void {
+        this.filePath = newPath;
+    }
     public getSteps(file?: string): Step[] {
         file = file || this.filePath;
         let sourceCode: string = fs.readFileSync(file, { encoding: 'UTF-8' });

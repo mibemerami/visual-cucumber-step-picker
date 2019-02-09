@@ -11,7 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.vcsp",
-		"onView:vscpTree"
+		"onView:vcspTree"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -24,8 +24,8 @@
 		"views": {
 			"explorer": [
 				{
-					"id": "vscpTree",
-					"name": "VSCP Tree View"
+					"id": "vcspTree",
+					"name": "VCSP List"
 				}
 			]
 		}
