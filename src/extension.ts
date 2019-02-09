@@ -13,8 +13,10 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "visualcucumbersteppicker" is now active!');
 
 	// vscode.window.registerTreeDataProvider('vscpTree', new contProvider.DepNodeProvider(join(vscode.env.appRoot, '/specs/features/step_definitions/')));
-	vscode.window.registerTreeDataProvider('vcspTree', new contProvider.DepNodeProvider(join('','E:/PC/development/nodeJs/atlassian-docu-control-questions/specs/features/step_definitions')));
-
+	let vcspTreeView = new contProvider.DepNodeProvider(join('', 'E:/PC/development/nodeJs/atlassian-docu-control-questions/specs/features/step_definitions'))
+	vscode.window.registerTreeDataProvider('vcspTree', vcspTreeView );
+	console.log('vcspTreeView: ', vcspTreeView);
+	
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json

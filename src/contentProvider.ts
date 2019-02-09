@@ -8,9 +8,12 @@ export class DepNodeProvider implements vscode.TreeDataProvider<StepItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<StepItem | undefined> = new vscode.EventEmitter<StepItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<StepItem | undefined> = this._onDidChangeTreeData.event;
 
-    constructor(private targetFolder: string) {
+    constructor(private targetFolder?: string) {
         console.log('DepNodeProvider constructor has been called with: ', targetFolder );
+        
     }
+
+    
 
     refresh(): void {
         console.log('refresh() has been called');
@@ -79,7 +82,7 @@ export class DepNodeProvider implements vscode.TreeDataProvider<StepItem> {
             let allSteps: string[] = [];
             allFiles.map(file => stepParser.getStepRegexpressions(file)).map(stepArray => stepArray.map(step => allSteps.push(step)));
             console.log('All steps: ', allSteps);
-            return allSteps.map(step => new StepItem(step, 'step, regex: ' + step, vscode.TreeItemCollapsibleState.Collapsed));
+            return allSteps.map(step => new StepItem(step, 'step, regex: ' + step, vscode.TreeItemCollapsibleState.None));
          
         } else {
             console.log('path does not exist: ', targetFolderPath);
@@ -111,6 +114,7 @@ export class StepItem extends vscode.TreeItem {
         console.log('StepItem constructor has been called.');
     }
 
+
     get tooltip(): string {
         console.log('tooltip() has been called');
         return `${this.label}-${this.version}`;
@@ -122,8 +126,9 @@ export class StepItem extends vscode.TreeItem {
     }
 
     iconPath = {
-        light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-        dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg')
+        light: path.join(__filename, '..', 'resources', 'light', 'step-icon.svg'),
+        dark: path.join(__filename, '..', 'resources', 'dark', 'step-icon.svg')
+        // dark: path.join(__filename, '..', '..', 'resources', 'dark', 'step-icon.svg')
     };
 
     contextValue = 'dependency';
