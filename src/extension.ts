@@ -5,6 +5,10 @@ import * as contentProvider from './contentProvider';
 import {join, basename} from 'path';
 const pf = require('./lib/projectFiles');
 
+
+
+
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -20,11 +24,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// let vcspTreeProvider = new contentProvider.StepsTreeProvider(join('', 'E:/PC/development/nodeJs/atlassian-docu-control-questions/specs/features/step_definitions'));
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
-	console.log('vcspTreeView: ', vcspTreeView);
 	vcspTreeView.onDidChangeSelection(evnt => {
 		let selectedSteps = evnt.selection.map(selectObj => selectObj.label);
 		console.log('The selection in the treeView changed. Event: ');
 		console.log('Selection: ', selectedSteps);
+		vscode.env.clipboard.writeText(selectedSteps[0]);
 	});
 
 	
