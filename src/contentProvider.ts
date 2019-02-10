@@ -3,13 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {StepDefinitionParser} from './stepDefinitionParser';
 
-export class DepNodeProvider implements vscode.TreeDataProvider<StepItem> {
+export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
 
     private _onDidChangeTreeData: vscode.EventEmitter<StepItem | undefined> = new vscode.EventEmitter<StepItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<StepItem | undefined> = this._onDidChangeTreeData.event;
 
     constructor(private targetFolder?: string) {
-        console.log('DepNodeProvider constructor has been called with: ', targetFolder );
+        console.log('StepsTreeProvider constructor has been called with: ', targetFolder );
         
     }
 
@@ -128,7 +128,6 @@ export class StepItem extends vscode.TreeItem {
     iconPath = {
         light: path.join(__filename, '..', 'resources', 'light', 'step-icon.svg'),
         dark: path.join(__filename, '..', 'resources', 'dark', 'step-icon.svg')
-        // dark: path.join(__filename, '..', '..', 'resources', 'dark', 'step-icon.svg')
     };
 
     contextValue = 'cucumberStep';

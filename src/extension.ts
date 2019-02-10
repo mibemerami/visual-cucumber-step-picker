@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as contProvider from './contentProvider';
+import * as contentProvider from './contentProvider';
 import {join, basename} from 'path';
 const pf = require('./lib/projectFiles');
 
@@ -17,8 +17,8 @@ export function activate(context: vscode.ExtensionContext) {
 	let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
 	let stepsFolder = subfolders.filter((name: string) => basename(name) === 'step_definitions')[0];
 
-	// let vcspTreeProvider = new contProvider.DepNodeProvider(join('', 'E:/PC/development/nodeJs/atlassian-docu-control-questions/specs/features/step_definitions'));
-	let vcspTreeProvider = new contProvider.DepNodeProvider(stepsFolder);
+	// let vcspTreeProvider = new contentProvider.StepsTreeProvider(join('', 'E:/PC/development/nodeJs/atlassian-docu-control-questions/specs/features/step_definitions'));
+	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
 	console.log('vcspTreeView: ', vcspTreeView);
 	vcspTreeView.onDidChangeSelection(evnt => {
