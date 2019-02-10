@@ -44,9 +44,9 @@ export class DepNodeProvider implements vscode.TreeDataProvider<StepItem> {
         }
 
     }
-
+    //TODO: refactor
     private getAllSubfolders (folder: string, array: string[]): string[] {
-        console.log('getAllSubfolders() has been called')
+        console.log('getAllSubfolders() has been called');
         fs.readdirSync(folder).filter(item => fs.statSync(path.join(folder, item)).isDirectory())
             .map(subfolder => path.join(folder, subfolder)).map(subfolder => {
                 if (!array.includes(subfolder)) {
@@ -69,7 +69,7 @@ export class DepNodeProvider implements vscode.TreeDataProvider<StepItem> {
 	 * Given the path to package.json, read all its dependencies and devDependencies.
 	 */
     private getStepsInTargetFolder(targetFolderPath: string): StepItem[] {
-        console.log('getStepsInTargetFolder() has been called')
+        console.log('getStepsInTargetFolder() has been called');
         if (this.pathExists(targetFolderPath)) {
             console.log('path exists: ', targetFolderPath);
             let stepParser = new StepDefinitionParser;
@@ -131,6 +131,6 @@ export class StepItem extends vscode.TreeItem {
         // dark: path.join(__filename, '..', '..', 'resources', 'dark', 'step-icon.svg')
     };
 
-    contextValue = 'dependency';
+    contextValue = 'cucumberStep';
 
 }
