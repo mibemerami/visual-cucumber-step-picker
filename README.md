@@ -1,6 +1,6 @@
 # visualcucumbersteppicker README
 
-This is the README for your extension "visualcucumbersteppicker". After writing up a brief description, we recommend including the following sections.
+This extension opens a tree view with all cucumber steps for your project, so you can easily add them to your feature files.  
 
 ## Features
 
