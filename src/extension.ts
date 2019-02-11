@@ -21,6 +21,8 @@ export function activate(context: vscode.ExtensionContext) {
 	let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
 	let stepsFolder = subfolders.filter((name: string) => basename(name) === 'step_definitions')[0];
 
+	vscode.workspace.findFiles('**/step_definitions/**/*.js').then(res => console.log('found files: ',res)); //TODO: Check usage in data provider
+
 	// let vcspTreeProvider = new contentProvider.StepsTreeProvider(join('', 'E:/PC/development/nodeJs/atlassian-docu-control-questions/specs/features/step_definitions'));
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
