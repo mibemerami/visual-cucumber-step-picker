@@ -25,8 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
 	vcspTreeView.onDidChangeSelection(evnt => {
 		let selectedSteps = evnt.selection.map(selectObj => selectObj.label);
-		console.log('The selection in the treeView changed. Event: ');
-		console.log('Selection: ', selectedSteps);
+		console.log('The selection in the treeView changed. Selected: ');
 		vscode.env.clipboard.writeText(selectedSteps[0]);
 	});
 
