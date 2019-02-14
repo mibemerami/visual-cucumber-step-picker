@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as contentProvider from './lib/contentProvider';
-import {join, basename} from 'path';
+import {basename} from 'path';
 const pf = require('./lib/projectFiles');
 
 
@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vcspTreeView.onDidChangeSelection(evnt => {
 		let selectedSteps = evnt.selection.map(selectObj => selectObj.label);
 		console.log('The selection in the treeView changed. Selected: ');
-		vscode.env.clipboard.writeText(selectedSteps[0]);
+		vscode.env.clipboard.writeText(selectedSteps[0]||'');
 	});
 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
