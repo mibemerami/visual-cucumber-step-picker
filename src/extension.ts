@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as contentProvider from './contentProvider';
+import * as contentProvider from './lib/contentProvider';
 import {join, basename} from 'path';
 const pf = require('./lib/projectFiles');
 
@@ -30,6 +30,10 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.env.clipboard.writeText(selectedSteps[0]);
 	});
 
+	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
+	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
+	vscode.commands.registerCommand('vcspTree.editEntry', () => console.log('editEntry has been called'));
+
 	
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -41,6 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World!');
 		vscode.window.showInformationMessage('Your project: ' + vscode.env.appRoot);
 	});
+
 
 	context.subscriptions.push(disposable);
 }

@@ -19,6 +19,26 @@
 			{
 				"command": "extension.vcsp",
 				"title": "vcsp"
+			},
+			{
+				"command": "vcspTree.refreshEntry",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "vcspTree.addEntry",
+				"title": "Add"
+			},
+			{
+				"command": "vcspTree.editEntry",
+				"title": "Edit",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
 			}
 		],
 		"views": {
@@ -26,6 +46,26 @@
 				{
 					"id": "vcspTree",
 					"name": "VCSP List"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "vcspTree.refreshEntry",
+					"when": "view == vcspTree",
+					"group": "navigation"
+				},
+				{
+					"command": "vcspTree.addEntry",
+					"when": "view == vcspTree"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "vcspTree.editEntry",
+					"when": "view == vcspTree && viewItem == cucumberStep",
+					"group": "inline"
 				}
 			]
 		}

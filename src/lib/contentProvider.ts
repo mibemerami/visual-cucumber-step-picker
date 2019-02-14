@@ -126,8 +126,8 @@ export class StepItem extends vscode.TreeItem {
     }
 
     iconPath = {
-        light: path.join(__filename, '..', 'resources', 'light', 'step-icon.svg'),
-        dark: path.join(__filename, '..', 'resources', 'dark', 'step-icon.svg')
+        light: path.join(__filename, '..', '..', 'resources', 'light', 'string.svg'),
+        dark: path.join(__filename, '..', '..', 'resources', 'dark', 'string.svg')
     };
 
     contextValue = 'cucumberStep';
