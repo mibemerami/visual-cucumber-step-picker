@@ -25,7 +25,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         return element;
     }
 
-    getChildren(element?: StepItem): Thenable<VCSPTreeItem[]> {
+    getChildren(element?: StepItem): Thenable<StepItem[]> {
         console.log('getChildren() has been called with: ', element);
         if (!this.targetFolder) {
             vscode.window.showInformationMessage('No StepItem in empty workspace');
@@ -148,6 +148,7 @@ export class VCSPTreeItem extends vscode.TreeItem {
 
     constructor(
         public readonly label: string,
+        public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command
     ) {
@@ -178,11 +179,11 @@ export class StepItem extends VCSPTreeItem {
 
     constructor(
         public readonly label: string,
-        private version: string,
+        public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command
     ) {
-        super(label, collapsibleState);
+        super(label, version, collapsibleState);
         console.log('StepItem constructor has been called.');
     }
 
@@ -206,16 +207,16 @@ export class StepItem extends VCSPTreeItem {
 
 }
 
-export class StepFolderItem extends vscode.TreeItem {
+export class StepFolderItem extends VCSPTreeItem {
 
     constructor(
         public readonly label: string,
-        private version: string,
+        public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command
     ) {
-        super(label, collapsibleState);
-        console.log('StepItem constructor has been called.');
+        super(label, version, collapsibleState);
+        console.log('StepFolderItem constructor has been called.');
     }
 
 
@@ -238,16 +239,16 @@ export class StepFolderItem extends vscode.TreeItem {
 
 }
 
-export class StepFileItem extends vscode.TreeItem {
+export class StepFileItem extends VCSPTreeItem {
 
     constructor(
         public readonly label: string,
-        private version: string,
+        public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command
     ) {
-        super(label, collapsibleState);
-        console.log('StepItem constructor has been called.');
+        super(label, version, collapsibleState);
+        console.log('StepFileItem constructor has been called.');
     }
 
 
