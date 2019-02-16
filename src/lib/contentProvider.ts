@@ -25,7 +25,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         return element;
     }
 
-    getChildren(element?: StepItem): Thenable<StepItem[]> {
+    getChildren(element?: VCSPTreeItem): Thenable<VCSPTreeItem[]> {
         console.log('getChildren() has been called with: ', element);
         if (!this.targetFolder) {
             vscode.window.showInformationMessage('No StepItem in empty workspace');
@@ -33,24 +33,28 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         }
         if (element) {
             if (element.contextValue === 'StepsFolder'){
-                const targetFolderPath = path.join('', this.targetFolder);
+                const targetFolderPath = path.join('', element.itemPath || '');
                 if (this.pathExists(targetFolderPath)) {
-                    let items: vscode.TreeItem[] = [];
+                    let items: VCSPTreeItem[] = [];
                     this.getSubfoldersAsTreeItems(targetFolderPath).map(item => items.push(item));
                     this.getJSFilesAsTreeItems(targetFolderPath).map(item => items.push(item));
+                    return Promise.resolve(items);
                 }
             }
             if (element.contextValue === 'StepsFile'){
-
+                const targetFolderPath = path.join('', element.itemPath || '');
+                if (this.pathExists(targetFolderPath)) {
+                    return Promise.resolve(this.getStepsFromStepFileAsTreeItems(targetFolderPath));
+                }
             }
-            return Promise.resolve([]); // Because for the step picker, we don't want a subtree
+            return Promise.resolve([]); 
         } else {
             const targetFolderPath = path.join('', this.targetFolder);
             if (this.pathExists(targetFolderPath)) {
-                let items: vscode.TreeItem[] = [];
+                let items: VCSPTreeItem[] = [];
                 this.getSubfoldersAsTreeItems(targetFolderPath).map(item => items.push(item));
                 this.getJSFilesAsTreeItems(targetFolderPath).map(item => items.push(item));
-                return Promise.resolve([]);
+                return Promise.resolve(items);
             } else {
                 vscode.window.showInformationMessage('Workspace has no package.json');
                 return Promise.resolve([]);
@@ -63,9 +67,12 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         console.log('getSubfoldersAsTreeItems() has been called');
         if (this.pathExists(targetFolderPath)) {
             console.log('path exists: ', targetFolderPath);
-            let allFolders = pf.getAllSubfolders(targetFolderPath, [targetFolderPath]);
+            let allFolders = pf.getAllSubfolders(targetFolderPath, []);
             
-            return allFolders.map((folder: string) => new StepFolderItem(folder, 'folder: ' + folder, vscode.TreeItemCollapsibleState.Collapsed));
+            return allFolders.map((folder: string) => {
+                let foldername = path.basename(folder);
+                return new StepFolderItem(foldername, 'click to expand', vscode.TreeItemCollapsibleState.Collapsed, folder);
+            });
 
         } else {
             console.log('path does not exist: ', targetFolderPath);
@@ -79,7 +86,10 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
             console.log('path exists: ', targetFolderPath);
             let allFiles = pf.getAllJSFilesInFolder(targetFolderPath);
 
-            return allFiles.map((file: string) => new StepFileItem(file, 'file: ' + file, vscode.TreeItemCollapsibleState.Collapsed));
+            return allFiles.map((file: string) => {
+                let filename: string = path.basename(file);
+                return new StepFileItem(filename, 'click to show steps' + file, vscode.TreeItemCollapsibleState.Collapsed, file);
+            });
 
         } else {
             console.log('path does not exist: ', targetFolderPath);
@@ -92,7 +102,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
             let stepParser = new StepDefinitionParser;
             let steps = stepParser.getStepRegexpressions(targetFilePath);
             if (steps.length > 0 ) {
-                return steps.map(step => new StepItem(step, 'step, regex: ' + step, vscode.TreeItemCollapsibleState.None));
+                return steps.map(step => new StepItem(step, 'click to add to clipboard', vscode.TreeItemCollapsibleState.None, targetFilePath));
             } else {
                 console.log('file is empty: ', targetFilePath);
                 vscode.window.showInformationMessage('File is empty: \n'+ targetFilePath);
@@ -150,6 +160,7 @@ export class VCSPTreeItem extends vscode.TreeItem {
         public readonly label: string,
         public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly itemPath?: string,
         public readonly command?: vscode.Command
     ) {
         super(label, collapsibleState);
@@ -181,6 +192,7 @@ export class StepItem extends VCSPTreeItem {
         public readonly label: string,
         public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly itemPath?: string,
         public readonly command?: vscode.Command
     ) {
         super(label, version, collapsibleState);
@@ -207,12 +219,46 @@ export class StepItem extends VCSPTreeItem {
 
 }
 
+export class StepFileItem extends VCSPTreeItem {
+
+    constructor(
+        public readonly label: string,
+        public readonly version: string,
+        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly itemPath?: string,
+        public readonly command?: vscode.Command
+    ) {
+        super(label, version, collapsibleState);
+        console.log('StepFileItem constructor has been called.');
+    }
+
+
+    get tooltip(): string {
+        console.log('tooltip() has been called');
+        return `${this.label}-${this.version}`;
+    }
+
+    get description(): string {
+        console.log('description() has been called');
+        return this.version;
+    }
+
+    iconPath = {
+        light: path.join(__filename, '..', '..', 'resources', 'light', 'string.svg'),
+        dark: path.join(__filename, '..', '..', 'resources', 'dark', 'string.svg')
+    };
+
+    contextValue = 'StepsFile';
+
+}
+
 export class StepFolderItem extends VCSPTreeItem {
 
     constructor(
         public readonly label: string,
         public readonly version: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly itemPath?: string,
         public readonly command?: vscode.Command
     ) {
         super(label, version, collapsibleState);
@@ -239,34 +285,3 @@ export class StepFolderItem extends VCSPTreeItem {
 
 }
 
-export class StepFileItem extends VCSPTreeItem {
-
-    constructor(
-        public readonly label: string,
-        public readonly version: string,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-        public readonly command?: vscode.Command
-    ) {
-        super(label, version, collapsibleState);
-        console.log('StepFileItem constructor has been called.');
-    }
-
-
-    get tooltip(): string {
-        console.log('tooltip() has been called');
-        return `${this.label}-${this.version}`;
-    }
-
-    get description(): string {
-        console.log('description() has been called');
-        return this.version;
-    }
-
-    iconPath = {
-        light: path.join(__filename, '..', '..', 'resources', 'light', 'string.svg'),
-        dark: path.join(__filename, '..', '..', 'resources', 'dark', 'string.svg')
-    };
-
-    contextValue = 'StepsFile';
-
-}
