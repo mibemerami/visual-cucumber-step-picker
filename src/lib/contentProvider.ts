@@ -8,13 +8,21 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
 
     private _onDidChangeTreeData: vscode.EventEmitter<StepItem | undefined> = new vscode.EventEmitter<StepItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<StepItem | undefined> = this._onDidChangeTreeData.event;
-
+    private _selectedTreeItem: vscode.TreeItem|undefined;
     constructor(private targetFolder?: string) {
         console.log('StepsTreeProvider constructor has been called with: ', targetFolder );
         
     }
 
+
+    public setSelectedTreeItem(item: vscode.TreeItem ): void {
+        this._selectedTreeItem = item;
+    }
     
+    public getSelectedTreeItem(): vscode.TreeItem | undefined {
+        return this._selectedTreeItem;
+    }
+
     refresh(): void {
         console.log('refresh() has been called');
         this._onDidChangeTreeData.fire();

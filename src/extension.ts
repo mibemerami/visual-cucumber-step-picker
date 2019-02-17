@@ -18,15 +18,34 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
-	vcspTreeView.onDidChangeSelection(evnt => {
+	vcspTreeView.onDidChangeSelection(evnt => {  // TODO: adapt, bacause multi selections seems not possible here
+		vcspTreeProvider.setSelectedTreeItem(evnt.selection[0]);  
 		let selectedSteps = evnt.selection.map(selectObj => selectObj.label);
-		console.log('The selection in the treeView changed. Selected: ');
+		console.log('The selection in the treeView changed. ');
 		vscode.env.clipboard.writeText(selectedSteps[0]||'');
 	});
 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
-	vscode.commands.registerCommand('vcspTree.editEntry', () => console.log('editEntry has been called'));
+	vscode.commands.registerTextEditorCommand('vcspTree.editEntry', (textEditor, edit) => {
+		console.log('editEntry has been called');
+		// let currentSelection: vscode.Selection|undefined = vscode.window.activeTextEditor 
+		// 	&& vscode.window.activeTextEditor.selection;
+		let currentPositions: vscode.Position[]  = 
+			textEditor.selections.map(select => new vscode.Position(select.start.line, select.start.character));
+		// if(currentSelection) {
+		// 	let currentPosition = new vscode.Position(currentSelection.start.line, currentSelection.start.line);
+		// 	vscode.window.activeTextEditor && vscode.window.activeTextEditor.edit(vscode.TextEdit.Te)
+		// }
+		
+		let selectedItem = vcspTreeProvider.getSelectedTreeItem();
+		if (selectedItem){
+			let insertText = selectedItem.label || '' ;
+			currentPositions.forEach(position => {
+				textEditor.edit(edit => edit.insert(position, insertText));
+			});
+		}
+	});
 
 
 }
