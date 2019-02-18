@@ -122,31 +122,6 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         }
     }
 
-	/**
-	 * Given the path to package.json, read all its dependencies and devDependencies.
-	 */
-    private getStepsInTargetFolder(targetFolderPath: string): StepItem[] {
-        console.log('getStepsInTargetFolder() has been called');
-        if (this.pathExists(targetFolderPath)) {
-            console.log('path exists: ', targetFolderPath);
-            let stepParser = new StepDefinitionParser;
-            let allFolders = pf.getAllSubfolders(targetFolderPath, [targetFolderPath]);
-            let allFiles: string[]  = [];
-            allFolders.map((folder: string) =>
-                pf.getAllJSFilesInFolder(folder).map((file: string) => allFiles.push(file))
-            );
-            console.log('All files: ', allFiles);
-            let allSteps: string[] = [];
-            allFiles.map(file => stepParser.getStepRegexpressions(file)).map(stepArray => stepArray.map(step => allSteps.push(step)));
-            console.log('All steps: ', allSteps);
-            return allSteps.map(step => new StepItem(step, 'step, regex: ' + step, vscode.TreeItemCollapsibleState.Collapsed));
-         
-        } else {
-            console.log('path does not exist: ', targetFolderPath);
-            return [];
-        }
-    }
-
     
     private pathExists(p: string): boolean {
         console.log('pathExists() has been called');
