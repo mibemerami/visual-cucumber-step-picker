@@ -27,26 +27,21 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
-	vscode.commands.registerTextEditorCommand('vcspTree.editEntry', (textEditor, edit) => {
+	vscode.commands.registerCommand('vcspTree.editEntry', (item: vscode.TreeItem) => {
 		console.log('editEntry has been called');
-		// let currentSelection: vscode.Selection|undefined = vscode.window.activeTextEditor 
-		// 	&& vscode.window.activeTextEditor.selection;
-		let currentPositions: vscode.Position[]  = 
-			textEditor.selections.map(select => new vscode.Position(select.start.line, select.start.character));
-		// if(currentSelection) {
-		// 	let currentPosition = new vscode.Position(currentSelection.start.line, currentSelection.start.line);
-		// 	vscode.window.activeTextEditor && vscode.window.activeTextEditor.edit(vscode.TextEdit.Te)
-		// }
-		
-		let selectedItem = vcspTreeProvider.getSelectedTreeItem();
-		if (selectedItem){
-			let insertText = selectedItem.label || '' ;
+		let editor = vscode.window.activeTextEditor;
+		if(editor){
+			let currentPositions: vscode.Position[]  = 
+				editor.selections.map(select => new vscode.Position(select.start.line, select.start.character));
 			currentPositions.forEach(position => {
-				textEditor.edit(edit => edit.insert(position, insertText));
+				if(editor){
+					editor.edit(textEdit => textEdit.insert(position, item.label||''));
+				}
 			});
+		} else {
+			vscode.window.showInformationMessage('No active editor, to insert text.');
 		}
 	});
-
 
 }
 
