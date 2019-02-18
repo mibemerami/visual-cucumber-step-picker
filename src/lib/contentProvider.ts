@@ -79,7 +79,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
             
             return allFolders.map((folder: string) => {
                 let foldername = path.basename(folder);
-                return new StepFolderItem(foldername, 'click to expand', vscode.TreeItemCollapsibleState.Collapsed, folder);
+                return new StepFolderItem(foldername, '', vscode.TreeItemCollapsibleState.Collapsed, folder);
             });
 
         } else {
@@ -96,7 +96,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
 
             return allFiles.map((file: string) => {
                 let filename: string = path.basename(file);
-                return new StepFileItem(filename, 'click to show steps' + file, vscode.TreeItemCollapsibleState.Collapsed, file);
+                return new StepFileItem(filename, '', vscode.TreeItemCollapsibleState.Collapsed, file);
             });
 
         } else {
@@ -110,7 +110,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
             let stepParser = new StepDefinitionParser;
             let steps = stepParser.getStepRegexpressions(targetFilePath);
             if (steps.length > 0 ) {
-                return steps.map(step => new StepItem(step, 'click to add to clipboard', vscode.TreeItemCollapsibleState.None, targetFilePath));
+                return steps.map(step => new StepItem(step, '', vscode.TreeItemCollapsibleState.None, targetFilePath));
             } else {
                 console.log('file is empty: ', targetFilePath);
                 vscode.window.showInformationMessage('File is empty: \n'+ targetFilePath);
@@ -185,7 +185,7 @@ export class StepItem extends VCSPTreeItem {
 
     get tooltip(): string {
         console.log('tooltip() has been called');
-        return `${this.label}-${this.version}`;
+        return `Click to add to clipboard.`;
     }
 
     get description(): string {
@@ -218,7 +218,7 @@ export class StepFileItem extends VCSPTreeItem {
 
     get tooltip(): string {
         console.log('tooltip() has been called');
-        return `${this.label}-${this.version}`;
+        return `Click to expand ${this.itemPath || ''}`; 
     }
 
     get description(): string {
@@ -251,7 +251,7 @@ export class StepFolderItem extends VCSPTreeItem {
 
     get tooltip(): string {
         console.log('tooltip() has been called');
-        return `${this.label}-${this.version}`;
+        return `Click to expand ${this.itemPath || ''}`; 
     }
 
     get description(): string {

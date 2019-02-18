@@ -34,7 +34,7 @@
 			},
 			{
 				"command": "vcspTree.writeStep",
-				"title": "Edit",
+				"title": "Write to file.",
 				"icon": {
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"

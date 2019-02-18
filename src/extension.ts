@@ -33,11 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if(editor){
 			let currentPositions: vscode.Position[]  = 
 				editor.selections.map(select => new vscode.Position(select.start.line, select.start.character));
-			currentPositions.forEach(position => {
-				if(editor){
-					editor.edit(textEdit => textEdit.insert(position, item.label||''));
-				}
-			});
+			editor.edit(textEdit => currentPositions.forEach(position => textEdit.insert(position, item.label || '')));
 		} else {
 			vscode.window.showInformationMessage('No active editor, to insert text.');
 		}
