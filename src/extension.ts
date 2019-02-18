@@ -9,13 +9,11 @@ const pf = require('./lib/projectFiles');
 
 
 export function activate(context: vscode.ExtensionContext) {
-
-	console.log('Congratulations, your extension "visualcucumbersteppicker" is now active!');
-
-	console.log('Your project: ' + vscode.workspace.rootPath);
+	// Find stepdefinitions folder
 	let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
 	let stepsFolder = subfolders.filter((name: string) => basename(name) === 'step_definitions')[0];
 
+	// Add treeView, populated with items, to vscode
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
 	vcspTreeView.onDidChangeSelection(evnt => {  // TODO: adapt, bacause multi selections seems not possible here
@@ -25,6 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.env.clipboard.writeText(selectedSteps[0]||'');
 	});
 
+	// Define commands 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
 	vscode.commands.registerCommand('vcspTree.writeStep', (item: vscode.TreeItem) => {
@@ -41,5 +40,5 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 
-// this method is called when your extension is deactivated
+// this method is called when the extension is deactivated
 export function deactivate() {}
