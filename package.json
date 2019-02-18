@@ -33,7 +33,7 @@
 				"title": "Add"
 			},
 			{
-				"command": "vcspTree.editEntry",
+				"command": "vcspTree.writeStep",
 				"title": "Edit",
 				"icon": {
 					"light": "resources/light/edit.svg",
@@ -63,7 +63,7 @@
 			],
 			"view/item/context": [
 				{
-					"command": "vcspTree.editEntry",
+					"command": "vcspTree.writeStep",
 					"when": "view == vcspTree && viewItem == cucumberStep",
 					"group": "inline"
 				}

@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
-	vscode.commands.registerCommand('vcspTree.editEntry', (item: vscode.TreeItem) => {
+	vscode.commands.registerCommand('vcspTree.writeStep', (item: vscode.TreeItem) => {
 		console.log('editEntry has been called');
 		let editor = vscode.window.activeTextEditor;
 		if(editor){
