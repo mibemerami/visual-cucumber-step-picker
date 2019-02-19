@@ -30,9 +30,15 @@ export function activate(context: vscode.ExtensionContext) {
 		console.log('editEntry has been called');
 		let editor = vscode.window.activeTextEditor;
 		if(editor){
-			let currentPositions: vscode.Position[]  = 
-				editor.selections.map(select => new vscode.Position(select.start.line, select.start.character));
-			editor.edit(textEdit => currentPositions.forEach(position => textEdit.insert(position, item.label || '')));
+			console.log('selections: ', editor.selections);
+			editor.edit(textEdit => {
+				if (editor) {
+					editor.selections.forEach(selection => {
+						textEdit.delete(selection);
+						textEdit.insert(selection.start, item.label || '');
+					});
+				}
+			});
 		} else {
 			vscode.window.showInformationMessage('No active editor, to insert text.');
 		}
