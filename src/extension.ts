@@ -16,11 +16,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// Add treeView, populated with items, to vscode
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
-	vcspTreeView.onDidChangeSelection(evnt => {  // TODO: adapt, bacause multi selections seems not possible here
+
+	// Handle events
+	vcspTreeView.onDidChangeSelection(evnt => { 
 		vcspTreeProvider.setSelectedTreeItem(evnt.selection[0]);  
-		let selectedSteps = evnt.selection.map(selectObj => selectObj.label);
-		console.log('The selection in the treeView changed. ');
-		vscode.env.clipboard.writeText(selectedSteps[0]||'');
+		vscode.env.clipboard.writeText(evnt.selection[0].label||'');
 	});
 
 	// Define commands 
