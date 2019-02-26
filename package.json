@@ -33,6 +33,10 @@
 				"title": "Add"
 			},
 			{
+				"command": "vcspTree.stepsDir",
+				"title": "Stepsdirectory"
+			},
+			{
 				"command": "vcspTree.writeStep",
 				"title": "Write to file.",
 				"icon": {
@@ -58,6 +62,10 @@
 				},
 				{
 					"command": "vcspTree.addEntry",
+					"when": "view == vcspTree"
+				},
+				{
+					"command": "vcspTree.stepsDir",
 					"when": "view == vcspTree"
 				}
 			],

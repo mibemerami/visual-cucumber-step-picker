@@ -14,6 +14,9 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         
     }
 
+    public setTargetFolder(folder: string){
+        this.targetFolder = folder;
+    }
 
     public setSelectedTreeItem(item: vscode.TreeItem ): void {
         this._selectedTreeItem = item;
@@ -64,7 +67,7 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
                 this.getJSFilesAsTreeItems(targetFolderPath).map(item => items.push(item));
                 return Promise.resolve(items);
             } else {
-                vscode.window.showInformationMessage('Workspace has no package.json');
+                vscode.window.showInformationMessage('Path not found: ', targetFolderPath );
                 return Promise.resolve([]);
             }
         }

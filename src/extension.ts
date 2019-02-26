@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as contentProvider from './lib/contentProvider';
-import {basename} from 'path';
+import * as path from 'path';
 const pf = require('./lib/projectFiles');
 
 
@@ -11,7 +11,7 @@ const pf = require('./lib/projectFiles');
 export function activate(context: vscode.ExtensionContext) {
 	// Find stepdefinitions folder
 	let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
-	let stepsFolder = subfolders.filter((name: string) => basename(name) === 'step_definitions')[0];
+	let stepsFolder = subfolders.filter((name: string) => path.basename(name) === 'step_definitions')[0];
 
 	// Add treeView, populated with items, to vscode
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
@@ -26,6 +26,21 @@ export function activate(context: vscode.ExtensionContext) {
 	// Define commands 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
+	vscode.commands.registerCommand('vcspTree.stepsDir', () => {
+		console.log('stepsDir has been called');
+		vscode.window.showOpenDialog(
+				{canSelectFiles: false, canSelectFolders: true, canSelectMany: false}
+			).then(folder => {
+				console.log('selected folder: ', folder);
+				if (folder) {
+					let normalizedPath = process.platform === 'win32' 
+						 ? folder[0].path.split('/').reduce((a, x) => path.join(a, x), '')
+						 : folder[0].path;
+					vcspTreeProvider.setTargetFolder(normalizedPath);
+					vcspTreeProvider.refresh();
+				}
+			});
+	});
 	vscode.commands.registerCommand('vcspTree.writeStep', (item: vscode.TreeItem) => {
 		console.log('editEntry has been called');
 		let editor = vscode.window.activeTextEditor;
