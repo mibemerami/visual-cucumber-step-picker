@@ -78,8 +78,10 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         console.log('getSubfoldersAsTreeItems() has been called');
         if (this.pathExists(targetFolderPath)) {
             console.log('path exists: ', targetFolderPath);
-            let allFolders = pf.getAllSubfolders(targetFolderPath, []);
-            
+            // let allFolders = pf.getAllSubfolders(targetFolderPath, []); // TODO: get only direct subfolders
+            let allFolders = fs.readdirSync(targetFolderPath).map(item => path.join(targetFolderPath, item)).filter(item => fs.statSync(item).isDirectory());
+            console.log('getSubfoldersAsTreeItems allFolders: ', allFolders);
+
             return allFolders.map((folder: string) => {
                 let foldername = path.basename(folder);
                 return new StepFolderItem(foldername, '', vscode.TreeItemCollapsibleState.Collapsed, folder);

@@ -34,7 +34,7 @@
 			},
 			{
 				"command": "vcspTree.stepsDir",
-				"title": "Stepsdirectory"
+				"title": "Select steps directory"
 			},
 			{
 				"command": "vcspTree.writeStep",
