@@ -15,6 +15,22 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "VisualCucumberStepPicker",
+			"properties": {
+				"vcspTree.stepsFolder": {
+					"type": "string",
+					"default": "specs/features/step_definitions",
+					"description": "Define the default path to the steps directory."
+				},
+				"vcspTree.clearedStepFilter": {
+					"type": "string",
+					"default": "/([\\/\\^]*)([\\$\\/]*)/gi",
+					"description": "Define a regex to clear the steps from undesired characters. This will run .replase(regex, '') on the step."
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "extension.vcsp",
@@ -91,5 +107,7 @@
 		"tslint": "^5.8.0",
 		"@types/node": "^8.10.25",
 		"@types/mocha": "^2.2.42"
+	},
+	"dependencies": {
 	}
 }

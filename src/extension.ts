@@ -10,8 +10,9 @@ const pf = require('./lib/projectFiles');
 
 export function activate(context: vscode.ExtensionContext) {
 	// Find stepdefinitions folder
-	let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
-	let stepsFolder = subfolders.filter((name: string) => path.basename(name) === 'step_definitions')[0];
+	// let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
+	// let stepsFolder = subfolders.filter((name: string) => path.basename(name) === 'step_definitions')[0];
+	let stepsFolder = pf.getStepsFolder();
 
 	// Add treeView, populated with items, to vscode
 	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
@@ -42,6 +43,13 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 	});
 	vscode.commands.registerCommand('vcspTree.writeStep', (item: vscode.TreeItem) => {
+		// Test
+		// launch.json configuration
+		if (vscode.window.activeTextEditor) {
+			let config = vscode.workspace.getConfiguration().get('vcspTree.clearedStepFilter')
+			console.log('launch config: ', config)
+		} 
+		
 		console.log('editEntry has been called');
 		let editor = vscode.window.activeTextEditor;
 		if(editor){
