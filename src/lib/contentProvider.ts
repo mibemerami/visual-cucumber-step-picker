@@ -157,12 +157,12 @@ export class VCSPTreeItem extends vscode.TreeItem {
 
 
     get tooltip(): string {
-        console.log('tooltip() has been called');
+        // console.log('tooltip() has been called');
         return '';
     }
 
     get description(): string {
-        console.log('description() has been called');
+        // console.log('description() has been called');
         return '';
     }
 
@@ -189,12 +189,12 @@ export class StepItem extends VCSPTreeItem {
 
 
     get tooltip(): string {
-        console.log('tooltip() has been called');
+        // console.log('tooltip() has been called');
         return `Click to add to clipboard.`;
     }
 
     get description(): string {
-        console.log('description() has been called');
+        // console.log('description() has been called');
         return this.version;
     }
 
@@ -222,12 +222,12 @@ export class StepFileItem extends VCSPTreeItem {
 
 
     get tooltip(): string {
-        console.log('tooltip() has been called');
+        // console.log('tooltip() has been called');
         return `Click to expand ${this.itemPath || ''}`; 
     }
 
     get description(): string {
-        console.log('description() has been called');
+        // console.log('description() has been called');
         return this.version;
     }
 
@@ -255,12 +255,12 @@ export class StepFolderItem extends VCSPTreeItem {
 
 
     get tooltip(): string {
-        console.log('tooltip() has been called');
+        // console.log('tooltip() has been called');
         return `Click to expand ${this.itemPath || ''}`; 
     }
 
     get description(): string {
-        console.log('description() has been called');
+        // console.log('description() has been called');
         return this.version;
     }
 

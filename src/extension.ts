@@ -23,6 +23,15 @@ export function activate(context: vscode.ExtensionContext) {
 		vcspTreeProvider.setSelectedTreeItem(evnt.selection[0]);  
 		vscode.env.clipboard.writeText(evnt.selection[0].label||'');
 	});
+	vscode.workspace.onDidChangeConfiguration(configChangeEvent => {
+		if (configChangeEvent.affectsConfiguration('vcspTree.stepsFolder')) {
+			let newFolder = vscode.workspace.getConfiguration().get('vcspTree.stepsFolder') 
+			if (typeof newFolder === 'string') {
+				vcspTreeProvider.setTargetFolder(newFolder);
+				vcspTreeProvider.refresh();
+			}
+		}
+	})
 
 	// Define commands 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
@@ -37,19 +46,13 @@ export function activate(context: vscode.ExtensionContext) {
 					let normalizedPath = process.platform === 'win32' 
 						 ? folder[0].path.split('/').reduce((a, x) => path.join(a, x), '')
 						 : folder[0].path;
-					vcspTreeProvider.setTargetFolder(normalizedPath);
-					vcspTreeProvider.refresh();
+					// vcspTreeProvider.setTargetFolder(normalizedPath);
+					vscode.workspace.getConfiguration().update('vcspTree.stepsFolder', normalizedPath);
+					// vcspTreeProvider.refresh();
 				}
 			});
 	});
 	vscode.commands.registerCommand('vcspTree.writeStep', (item: vscode.TreeItem) => {
-		// Test
-		// launch.json configuration
-		if (vscode.window.activeTextEditor) {
-			let config = vscode.workspace.getConfiguration().get('vcspTree.clearedStepFilter')
-			console.log('launch config: ', config)
-		} 
-		
 		console.log('editEntry has been called');
 		let editor = vscode.window.activeTextEditor;
 		if(editor){
