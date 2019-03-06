@@ -1,8 +1,18 @@
 # visualcucumbersteppicker README
 
-This extension opens a tree view with all cucumber steps for your project, so you can easily add them to your feature files.  
+Visual Cucumber Step Picker (for Javascript) is a VSCode extension, that opens a tree view panel, as part of the explorer, that shows you all Cucumber steps in your project at a glance, and allows you, to add them directly to your scenarios.
+
+It can be hard, to keep an overview of all your available Cucumber steps, and it gets harder, the more your project grows. If you have hundreds of steps, and more, you don't want to go manually through all your step definition files to search for a step that matches your intention. But if you write unnecessary new steps, the confusion gets only bigger.
+
+With Visual Cucumber Step Picker you have all Cucumber steps at your fingertips, they are sorted by files and folders, and they are searchable. You can add them to your scenario with just a click.
 
 ## Features
+
+* List all Cucumber steps in the step definitions folder, which you can select. Default is ./features/step_definitions.
+* Expand or collapse your step definition files and subfolders, to get a better overview.
+* Add steps directly to your scenario.
+* Add steps in a cleaned up way, with a pattern you define, or in a raw form.
+
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
