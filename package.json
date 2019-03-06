@@ -59,6 +59,14 @@
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
 				}
+			},
+			{
+				"command": "vcspTree.writeFullStep",
+				"title": "Write full step to file.",
+				"icon": {
+					"light": "resources/light/edit.svg",
+					"dark": "resources/dark/edit.svg"
+				}
 			}
 		],
 		"views": {
@@ -88,6 +96,11 @@
 			"view/item/context": [
 				{
 					"command": "vcspTree.writeStep",
+					"when": "view == vcspTree && viewItem == cucumberStep",
+					"group": "inline"
+				},
+				{
+					"command": "vcspTree.writeFullStep",
 					"when": "view == vcspTree && viewItem == cucumberStep",
 					"group": "inline"
 				}

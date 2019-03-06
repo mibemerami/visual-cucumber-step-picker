@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	vscode.workspace.onDidChangeConfiguration(configChangeEvent => {
 		if (configChangeEvent.affectsConfiguration('vcspTree.stepsFolder')) {
-			let newFolder = vscode.workspace.getConfiguration().get('vcspTree.stepsFolder') 
+			let newFolder = vscode.workspace.getConfiguration().get('vcspTree.stepsFolder'); 
 			if (typeof newFolder === 'string') {
 				vcspTreeProvider.setTargetFolder(newFolder);
 				vcspTreeProvider.refresh();
@@ -31,6 +31,16 @@ export function activate(context: vscode.ExtensionContext) {
 	// Define commands 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
+	vscode.commands.registerCommand('vcspTree.writeFullStep', (item: vscode.TreeItem) => {
+		console.log('write full step has been called');
+		vscode.window.showQuickPick(['Given', 'When', 'Then', 'And', 'But'], { canPickMany: false}).then(
+			selected => {
+				console.log('the user selected: ', selected);
+				let step = `${selected} ${item.label || ''}`;
+				writeStepToFile(step);
+			}
+		);
+	});
 	vscode.commands.registerCommand('vcspTree.stepsDir', () => {
 		console.log('stepsDir has been called');
 		vscode.window.showOpenDialog(
@@ -49,22 +59,27 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 	vscode.commands.registerCommand('vcspTree.writeStep', (item: vscode.TreeItem) => {
 		console.log('editEntry has been called');
-		let editor = vscode.window.activeTextEditor;
-		if(editor){
-			console.log('selections: ', editor.selections);
-			editor.edit(textEdit => {
-				if (editor) {
-					editor.selections.forEach(selection => {
-						textEdit.delete(selection);
-						textEdit.insert(selection.start, item.label || '');
-					});
-				}
-			});
-		} else {
-			vscode.window.showInformationMessage('No active editor, to insert text.');
-		}
+		writeStepToFile(item.label || '');
 	});
 
+}
+
+function writeStepToFile(step: string) {
+	let editor = vscode.window.activeTextEditor;
+	if (editor) {
+		console.log('selections: ', editor.selections);
+		editor.edit(textEdit => {
+			if (editor) {
+				editor.selections.forEach(selection => {
+					textEdit.delete(selection);
+					textEdit.insert(selection.start, step);
+				});
+			}
+		});
+	}
+	else {
+		vscode.window.showInformationMessage('No active editor, to insert text.');
+	}
 }
 
 // this method is called when the extension is deactivated
