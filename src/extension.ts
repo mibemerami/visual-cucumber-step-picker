@@ -9,13 +9,8 @@ const pf = require('./lib/projectFiles');
 
 
 export function activate(context: vscode.ExtensionContext) {
-	// Find stepdefinitions folder
-	// let subfolders = pf.getAllSubfolders(vscode.workspace.rootPath, [], ['node_modules','.git']);
-	// let stepsFolder = subfolders.filter((name: string) => path.basename(name) === 'step_definitions')[0];
-	let stepsFolder = pf.getStepsFolder();
-
 	// Add treeView, populated with items, to vscode
-	let vcspTreeProvider = new contentProvider.StepsTreeProvider(stepsFolder);
+	let vcspTreeProvider = new contentProvider.StepsTreeProvider(pf.getStepsFolder());
 	let vcspTreeView = vscode.window.createTreeView('vcspTree', { treeDataProvider: vcspTreeProvider } );
 
 	// Handle events
@@ -31,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vcspTreeProvider.refresh();
 			}
 		}
-	})
+	});
 
 	// Define commands 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
