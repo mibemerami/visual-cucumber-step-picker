@@ -24,11 +24,17 @@
 					"default": "specs/features/step_definitions",
 					"description": "Define the default path to the steps directory."
 				},
-				"vcspTree.clearedStepFilter": {
+				"vcspTree.cleareStepFilterPattern": {
 					"type": "string",
-					"default": "/([\\/\\^]*)([\\$\\/]*)/gi",
-					"description": "Define a regex to clear the steps from undesired characters. This will run .replase(regex, '') on the step."
+					"default": "([\\/\\^]*)([\\$\\/]*)",
+					"description": "Define a regex to clear the steps from undesired characters. Do not write the delimiters and flags. This will run .replace(regex, \"\") on the step."
+				},
+				"vcspTree.cleareStepFilterFlags": {
+					"type": "string",
+					"default": "gi",
+					"description": "Define the flags to use with the regexp. This will run .replase(regex, \"\") on the step."
 				}
+
 			}
 		},
 		"commands": [

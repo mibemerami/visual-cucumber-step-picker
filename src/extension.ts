@@ -35,8 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
 		console.log('write full step has been called');
 		vscode.window.showQuickPick(['Given', 'When', 'Then', 'And', 'But'], { canPickMany: false}).then(
 			selected => {
-				console.log('the user selected: ', selected);
-				let step = `${selected} ${item.label || ''}`;
+				let cleanedStep = cleanStep(item.label || '');
+				let step = `${selected} ${cleanedStep}`;
 				writeStepToFile(step);
 			}
 		);
@@ -64,7 +64,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 
-function writeStepToFile(step: string) {
+
+// Helpers:
+
+function cleanStep(step: string): string {
+	let pattern = vscode.workspace.getConfiguration().get('vcspTree.clearedStepFilter');
+	let flags = vscode.workspace.getConfiguration().get('vcspTree.clearedStepFilterFlags');
+	let filter: RegExp;
+	if(typeof pattern === 'string' && typeof flags === 'string'){
+		filter = new RegExp(pattern, flags);
+	} else {
+		filter = new RegExp('');
+	}
+	console.log('filter from config: ', filter);
+	return step.replace(filter, '');
+}
+
+function writeStepToFile(step: string): void {
 	let editor = vscode.window.activeTextEditor;
 	if (editor) {
 		console.log('selections: ', editor.selections);
@@ -72,7 +88,7 @@ function writeStepToFile(step: string) {
 			if (editor) {
 				editor.selections.forEach(selection => {
 					textEdit.delete(selection);
-					textEdit.insert(selection.start, step);
+					textEdit.insert(selection.start, step+'\r\n'); // TODO: Check if there is a better way than +\r\n
 				});
 			}
 		});
