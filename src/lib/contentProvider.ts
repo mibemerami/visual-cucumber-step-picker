@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import {StepDefinitionParser} from './stepDefinitionParser';
+import {StepDefinitionParser, StepDefinitionParserJS} from './stepDefinitionParser';
 const pf = require('./projectFiles');
 
 export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
@@ -111,16 +111,24 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
     }
 
     private getStepsFromStepFileAsTreeItems(targetFilePath: string): StepItem[] {
-        if (this.pathExists(targetFilePath)) {
-            let stepParser = new StepDefinitionParser;
+        const parseSteps = (stepParser: StepDefinitionParser) => {
             let steps = stepParser.getStepRegexpressions(targetFilePath);
-            if (steps.length > 0 ) {
+            if (steps.length > 0) {
                 return steps.map(step => new StepItem(step, '', vscode.TreeItemCollapsibleState.None, targetFilePath));
             } else {
                 console.log('file is empty: ', targetFilePath);
-                vscode.window.showInformationMessage('File is empty: \n'+ targetFilePath);
+                vscode.window.showInformationMessage('File is empty: \n' + targetFilePath);
                 return [];
             }
+        };
+        if (this.pathExists(targetFilePath)) {
+            const languageConfig = vscode.workspace.getConfiguration().get('vcspTree.language');
+            if(languageConfig){
+                let stepParser = new StepDefinitionParserJS;
+                return parseSteps(stepParser);
+            } else {
+                return [];
+            }   
         }else {
             console.log('path does not exist: ', targetFilePath);
             return [];
