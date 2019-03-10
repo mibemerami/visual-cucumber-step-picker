@@ -68,15 +68,17 @@ export function activate(context: vscode.ExtensionContext) {
 // Helpers:
 
 function cleanStep(step: string): string {
-	let pattern = vscode.workspace.getConfiguration().get('vcspTree.clearedStepFilter');
-	let flags = vscode.workspace.getConfiguration().get('vcspTree.clearedStepFilterFlags');
+	let pattern = vscode.workspace.getConfiguration().get('vcspTree.clearStepFilterPattern');
+	let flags = vscode.workspace.getConfiguration().get('vcspTree.clearStepFilterFlags');
 	let filter: RegExp;
 	if(typeof pattern === 'string' && typeof flags === 'string'){
+		console.log('both string');
 		filter = new RegExp(pattern, flags);
 	} else {
+		console.log('typeof pattern', typeof pattern, 'typeof flags', typeof flags)
 		filter = new RegExp('');
 	}
-	console.log('filter from config: ', filter);
+	console.log('filter from config: ', filter.toString());
 	return step.replace(filter, '');
 }
 

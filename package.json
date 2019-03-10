@@ -19,12 +19,12 @@
 			"type": "object",
 			"title": "VisualCucumberStepPicker",
 			"properties": {
-				"vcspTree.cleareStepFilterPattern": {
+				"vcspTree.clearStepFilterPattern": {
 					"type": "string",
 					"default": "([\\/\\^]*)([\\$\\/]*)",
 					"description": "Define a regex to clear the steps from undesired characters. Do not write the delimiters and flags. This will run .replace(regex, \"\") on the step."
 				},
-				"vcspTree.cleareStepFilterFlags": {
+				"vcspTree.clearStepFilterFlags": {
 					"type": "string",
 					"default": "gi",
 					"description": "Define the flags to use with the regexp. This will run .replase(regex, \"\") on the step."
