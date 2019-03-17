@@ -81,6 +81,22 @@
 					"light": "resources/light/edit.svg",
 					"dark": "resources/dark/edit.svg"
 				}
+			},
+			{
+				"command": "vcspTree.filterStepList",
+				"title": "Filter step list.",
+				"icon": {
+					"light": "resources/light/string.svg",
+					"dark": "resources/dark/string.svg"
+				}
+			},
+			{
+				"command": "vcspTree.openFile",
+				"title": "Open file.",
+				"icon": {
+					"light": "resources/light/document.svg",
+					"dark": "resources/dark/document.svg"
+				}
 			}
 		],
 		"views": {
@@ -95,6 +111,11 @@
 			"view/title": [
 				{
 					"command": "vcspTree.refreshEntry",
+					"when": "view == vcspTree",
+					"group": "navigation"
+				},
+				{
+					"command": "vcspTree.filterStepList",
 					"when": "view == vcspTree",
 					"group": "navigation"
 				},
@@ -116,6 +137,11 @@
 				{
 					"command": "vcspTree.writeFullStep",
 					"when": "view == vcspTree && viewItem == cucumberStep",
+					"group": "inline"
+				},
+				{
+					"command": "vcspTree.openFile",
+					"when": "view == vcspTree && viewItem == StepsFile",
 					"group": "inline"
 				}
 			]

@@ -31,6 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// Define commands 
 	vscode.commands.registerCommand('vcspTree.refreshEntry', () => vcspTreeProvider.refresh());
 	vscode.commands.registerCommand('vcspTree.addEntry', () => console.log('addEntry has been called'));
+	vscode.commands.registerCommand('vcspTree.openFile', () => console.log('vcspTree.openFile has been called'));
+	vscode.commands.registerCommand('vcspTree.filterStepList', () => console.log('vcspTree.filterStepList has been called'));
 	vscode.commands.registerCommand('vcspTree.writeFullStep', (item: vscode.TreeItem) => {
 		console.log('write full step has been called');
 		vscode.window.showQuickPick(['Given', 'When', 'Then', 'And', 'But'], { canPickMany: false}).then(
@@ -75,7 +77,7 @@ function cleanStep(step: string): string {
 		console.log('both string');
 		filter = new RegExp(pattern, flags);
 	} else {
-		console.log('typeof pattern', typeof pattern, 'typeof flags', typeof flags)
+		console.log('typeof pattern', typeof pattern, 'typeof flags', typeof flags);
 		filter = new RegExp('');
 	}
 	console.log('filter from config: ', filter.toString());
