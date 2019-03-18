@@ -9,9 +9,16 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<StepItem | undefined> = new vscode.EventEmitter<StepItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<StepItem | undefined> = this._onDidChangeTreeData.event;
     private _selectedTreeItem: vscode.TreeItem|undefined;
-    constructor(private targetFolder?: string) {
+    constructor(private targetFolder?: string, private searchFilter?: RegExp) {
+        if (typeof searchFilter === undefined) {
+            this.searchFilter = /.*/;
+        }
         console.log('StepsTreeProvider constructor has been called with: ', targetFolder );
         
+    }
+
+    public setSearchFilter(filter: RegExp){
+        this.searchFilter = filter;
     }
 
     public setTargetFolder(folder: string){
@@ -114,7 +121,9 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
         const parseSteps = (stepParser: StepDefinitionParser) => {
             let steps = stepParser.getStepRegexpressions(targetFilePath);
             if (steps.length > 0) {
-                return steps.map(step => new StepItem(step, '', vscode.TreeItemCollapsibleState.None, targetFilePath));
+                return steps
+                    .filter(step => step.match(this.searchFilter||/.*/ig))
+                    .map(step => new StepItem(step, '', vscode.TreeItemCollapsibleState.None, targetFilePath));
             } else {
                 console.log('file is empty: ', targetFilePath);
                 vscode.window.showInformationMessage('File is empty: \n' + targetFilePath);
