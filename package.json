@@ -1,7 +1,17 @@
 {
 	"name": "visualcucumbersteppicker",
 	"displayName": "VisualCucumberStepPicker",
-	"description": "",
+	"description": "Manage Cucmber-Steps as part of your explorer.",
+	"publisher": "mibemerami",
+	"author": {
+		"name": "Milan",
+		"email": "mibemerami@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mibemerami/visual-cucumber-step-picker"
+	},
+	"icon": "./resources/cucumber-icon.png",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.30.0"
