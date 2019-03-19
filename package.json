@@ -96,8 +96,8 @@
 				"command": "vcspTree.filterStepList",
 				"title": "Filter step list.",
 				"icon": {
-					"light": "resources/light/string.svg",
-					"dark": "resources/dark/string.svg"
+					"light": "resources/light/search.svg",
+					"dark": "resources/dark/search.svg"
 				}
 			},
 			{

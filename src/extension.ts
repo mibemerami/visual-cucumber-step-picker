@@ -34,10 +34,15 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('vcspTree.openFile', () => console.log('vcspTree.openFile has been called'));
 	vscode.commands.registerCommand('vcspTree.filterStepList', () => {
 		console.log('vcspTree.filterStepList has been called');
-		vscode.window.showInputBox().then(input => {
-			vcspTreeProvider.setSearchFilter(new RegExp(input||''));
+		if (vcspTreeProvider.getSearchFilter() === undefined) {
+			vscode.window.showInputBox().then(input => {
+				vcspTreeProvider.setSearchFilter(new RegExp(input||''));
+				vcspTreeProvider.refresh();
+			});
+		} else {
+			vcspTreeProvider.setSearchFilter(/.*/);
 			vcspTreeProvider.refresh();
-		});
+		}
 	});
 	vscode.commands.registerCommand('vcspTree.writeFullStep', (item: vscode.TreeItem) => {
 		console.log('write full step has been called');

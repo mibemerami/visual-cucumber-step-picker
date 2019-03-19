@@ -10,15 +10,19 @@ export class StepsTreeProvider implements vscode.TreeDataProvider<StepItem> {
     readonly onDidChangeTreeData: vscode.Event<StepItem | undefined> = this._onDidChangeTreeData.event;
     private _selectedTreeItem: vscode.TreeItem|undefined;
     constructor(private targetFolder?: string, private searchFilter?: RegExp) {
-        if (typeof searchFilter === undefined) {
-            this.searchFilter = /.*/;
-        }
+        // if (typeof searchFilter === undefined) {
+        //     this.searchFilter = /.*/;
+        // }
         console.log('StepsTreeProvider constructor has been called with: ', targetFolder );
         
     }
 
-    public setSearchFilter(filter: RegExp){
+    public setSearchFilter(filter: RegExp): void {
         this.searchFilter = filter;
+    }
+
+    public getSearchFilter(): RegExp|undefined {
+        return this.searchFilter;
     }
 
     public setTargetFolder(folder: string){
